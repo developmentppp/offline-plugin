@@ -36,6 +36,7 @@ export default class OfflinePlugin {
     this.assets = null;
     this.hashesMap = null;
     this.externals = null;
+    this.networkFirstAssets = this.options.networkFirstAssets;
     this.publicPath = this.options.publicPath;
     this.strategy = this.options.updateStrategy;
     this.responseStrategy = this.options.responseStrategy;
@@ -94,6 +95,10 @@ export default class OfflinePlugin {
 
     if (!Array.isArray(this.options.externals)) {
       this.options.externals = [];
+    }
+
+    if (!Array.isArray(this.options.networkFirstAssets)) {
+        this.options.networkFirstAssets = [];
     }
 
     const rewrites = this.options.rewrites || defaultOptions.rewrites;

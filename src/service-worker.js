@@ -223,6 +223,8 @@ export default class ServiceWorker {
 
         externals: externals,
 
+        networkFirstAssets: plugin.networkFirstAssets,
+
         hashesMap: hashesMap,
 
         strategy: plugin.strategy,
