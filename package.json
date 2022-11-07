@@ -1,6 +1,6 @@
 {
   "name": "@lcdp/offline-plugin",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "offline-plugin for webpack",
   "main": "lib/index.js",
   "files": [
@@ -44,7 +44,7 @@
   "dependencies": {
     "deep-extend": "^0.5.1",
     "ejs": "^3.1.8",
-    "loader-utils": "0.2.x",
+    "loader-utils": "3.x.x",
     "minimatch": "^3.0.3",
     "slash": "^1.0.0"
   },
