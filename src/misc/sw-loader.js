@@ -12,15 +12,18 @@ module.exports.pitch = function pitch(remainingRequest, precedingRequest, data) 
 
   const callback = this.async();
   const templatePath = path.join(__dirname, 'sw-template.js');
-  const query = loaderUtils.parseQuery(this.query);
+  // const query = loaderUtils.parseQuery(this.query);
+  const query = new URLSearchParams(this.resourceQuery.slice(1));
   const params = JSON.parse(query.json);
 
-  const request = loaderUtils.stringifyRequest(this, remainingRequest);
+  // const request = loaderUtils.stringifyRequest(this, remainingRequest);
+  const request = JSON.stringify(this.utils.contextify(this.context, remainingRequest));
   const source = 'module.exports = require(' + request + ')';
 
   const loaders = (params.loaders || []).map((loader) => {
     const loaderPath = path.join(__dirname, '../loaders', loader + '.js');
-    const loaderRequest = loaderUtils.stringifyRequest(this, '!!' + loaderPath);
+    // const loaderRequest = loaderUtils.stringifyRequest(this, '!!' + loaderPath);
+    const loaderRequest = JSON.stringify(this.utils.contextify(this.context, '!!' + loaderPath));
 
     this.addDependency(loaderPath);
 
