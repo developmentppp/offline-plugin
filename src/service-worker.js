@@ -56,7 +56,8 @@ export default class ServiceWorker {
     const data = JSON.stringify({
       data_var_name: this.SW_DATA_VAR,
       cacheMaps: plugin.cacheMaps,
-      navigationPreload: this.stringifyNavigationPreload(this.navigationPreload, plugin)
+      navigationPreload: this.stringifyNavigationPreload(this.navigationPreload, plugin),
+      importScripts: (plugin.options?.ServiceWorker?.importScripts || [])
     });
 
     const swLoaderPath = path.join(__dirname, 'misc/sw-loader.js');
@@ -213,35 +214,47 @@ export default class ServiceWorker {
       pluginVersion = plugin.pluginVersion;
     }
 
-    return `
-      var ${ this.SW_DATA_VAR } = ${ JSON.stringify({
-        assets: {
-          main: cache('main'),
-          additional: cache('additional'),
-          optional: cache('optional')
-        },
+    const scripts = plugin?.options?.ServiceWorker?.importScripts;
 
-        externals: externals,
+    const getScript = () => {
+      if (!scripts) { 
+        return ""; 
+      }
+      
+      let importScript = "";
+      scripts.forEach((script) => {
+          importScript += `\n   /**/ importScripts('${script}');`; 
+      });
+      return importScript;
+    };
 
-        networkFirstAssets: plugin.networkFirstAssets,
+    return (getScript() + '\n     var ' + this.SW_DATA_VAR + ' = ' + JSON.stringify({
+      assets: {
+        main: cache('main'),
+        additional: cache('additional'),
+        optional: cache('optional')
+      },
 
-        hashesMap: hashesMap,
+      externals: externals,
 
-        strategy: plugin.strategy,
-        responseStrategy: plugin.responseStrategy,
-        version: plugin.version,
-        name: this.CACHE_NAME,
-        pluginVersion: pluginVersion,
-        relativePaths: plugin.relativePaths,
+      networkFirstAssets: plugin.networkFirstAssets,
 
-        prefetchRequest: this.prefetchRequest,
+      hashesMap: hashesMap,
 
-        // These aren't added
-        alwaysRevalidate: plugin.alwaysRevalidate,
-        preferOnline: plugin.preferOnline,
-        ignoreSearch: plugin.ignoreSearch,
-      }, null, minify ? void 0 : '  ') };
-    `.trim();
+      strategy: plugin.strategy,
+      responseStrategy: plugin.responseStrategy,
+      version: plugin.version,
+      name: this.CACHE_NAME,
+      pluginVersion: pluginVersion,
+      relativePaths: plugin.relativePaths,
+
+      prefetchRequest: this.prefetchRequest,
+
+      // These aren't added
+      alwaysRevalidate: plugin.alwaysRevalidate,
+      preferOnline: plugin.preferOnline,
+      ignoreSearch: plugin.ignoreSearch
+    }, null, minify ? void 0 : '  ') + ';\n    ').trim();
   }
 
   getConfig(plugin) {
