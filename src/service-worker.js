@@ -57,7 +57,6 @@ export default class ServiceWorker {
       data_var_name: this.SW_DATA_VAR,
       cacheMaps: plugin.cacheMaps,
       navigationPreload: this.stringifyNavigationPreload(this.navigationPreload, plugin),
-      importScripts: (plugin.options?.ServiceWorker?.importScripts || [])
     });
 
     const swLoaderPath = path.join(__dirname, 'misc/sw-loader.js');
