@@ -213,9 +213,8 @@ export default class ServiceWorker {
       pluginVersion = plugin.pluginVersion;
     }
 
-    const scripts = plugin?.options?.ServiceWorker?.importScripts;
-
     const getScript = () => {
+      const scripts = plugin?.options?.ServiceWorker?.importScripts;
       if (!scripts) { 
         return ""; 
       }
