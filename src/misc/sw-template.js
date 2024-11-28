@@ -370,62 +370,63 @@ function WebpackServiceWorker(params, helpers) {
     /**
      * MFP: Web push support
      */
-    self.addEventListener('push', function(event) {
-        if (!(self.Notification && self.Notification.permission === 'granted')) {
-            return;
-        }
+    // Deactivated in favor of firebase
+    // self.addEventListener('push', function(event) {
+    //     if (!(self.Notification && self.Notification.permission === 'granted')) {
+    //         return;
+    //     }
 
-        if (!event.data || !event.data.json) {
-            return;
-        }
+    //     if (!event.data || !event.data.json) {
+    //         return;
+    //     }
 
-        try {
-            const jsonData = event.data.json();
-            if (!jsonData) {
-                return;
-            }
-            const title = jsonData.title;
-            const body = jsonData.body;
-            const dataUrl = jsonData.url;
-            const image = jsonData.image;
-            const icon = jsonData.icon;
-            const tag = jsonData.tag;
+    //     try {
+    //         const jsonData = event.data.json();
+    //         if (!jsonData) {
+    //             return;
+    //         }
+    //         const title = jsonData.title;
+    //         const body = jsonData.body;
+    //         const dataUrl = jsonData.url;
+    //         const image = jsonData.image;
+    //         const icon = jsonData.icon;
+    //         const tag = jsonData.tag;
 
-            if (!(title || "").length) {
-                return;
-            }
+    //         if (!(title || "").length) {
+    //             return;
+    //         }
 
-            const notificationOptions = {};
-            if ((body || "").length) {
-                notificationOptions.body = body;
-            }
-            if ((image || "").length) {
-                notificationOptions.image = image;
-            }
-            if ((icon || "").length) {
-                notificationOptions.icon = icon;
-            }   
-            if ((tag || "").length) {
-                notificationOptions.tag = tag;
-            }                                    
-            if ((dataUrl || "").length) {
-                notificationOptions.data = {
-                    url: dataUrl
-                };
-            }
+    //         const notificationOptions = {};
+    //         if ((body || "").length) {
+    //             notificationOptions.body = body;
+    //         }
+    //         if ((image || "").length) {
+    //             notificationOptions.image = image;
+    //         }
+    //         if ((icon || "").length) {
+    //             notificationOptions.icon = icon;
+    //         }   
+    //         if ((tag || "").length) {
+    //             notificationOptions.tag = tag;
+    //         }                                    
+    //         if ((dataUrl || "").length) {
+    //             notificationOptions.data = {
+    //                 url: dataUrl
+    //             };
+    //         }
 
-            event.waitUntil(
-                self.registration.showNotification(
-                    title,
-                    notificationOptions
-                )
-            );
+    //         event.waitUntil(
+    //             self.registration.showNotification(
+    //                 title,
+    //                 notificationOptions
+    //             )
+    //         );
 
-        } catch (e) {
-            console.error("Web push error", e);
-            return;
-        }
-    });
+    //     } catch (e) {
+    //         console.error("Web push error", e);
+    //         return;
+    //     }
+    // });
 
     self.addEventListener('notificationclick', function(event) {
         event.notification.close();
